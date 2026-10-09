@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="options.css" />
+  <title>主题视频侧栏 · 设置</title>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hd">
+      <div class="logo">▶</div>
+      <div>
+        <div class="tt">主题视频侧栏 · 设置</div>
+        <div class="st">订阅喜欢的博主，命中网页主题时右上角提醒你</div>
+      </div>
+    </div>
+
+    <section>
+      <div class="sec-t">我的订阅 <span id="subCount" class="cnt"></span></div>
+      <div class="add-row">
+        <select id="addPlatform">
+          <option value="bilibili">哔哩哔哩 UP 主</option>
+          <option value="youtube">YouTube 频道</option>
+        </select>
+        <input type="text" id="addInput" placeholder="UP主名称 / B站空间链接；或 @handle / 频道链接" />
+        <button id="addBtn" class="pri">添加</button>
+      </div>
+      <div id="addTip" class="tip"></div>
+      <div id="subList" class="sub-list"></div>
+      <div id="subEmpty" class="empty">还没有订阅，添加博主或从下方「推荐组合」一键订阅</div>
+    </section>
+
+    <section>
+      <div class="sec-t">推荐组合订阅</div>
+      <div class="hint">一键订阅整组博主（数据为实测抓取的真实 UID / 频道 ID）</div>
+      <div id="presetList" class="preset-list"></div>
+    </section>
+
+    <section>
+      <div class="sec-t">提醒设置</div>
+      <label class="check"><input type="checkbox" id="notifyEnabled" /><span>侧栏未打开时，订阅博主命中当前主题就在页面右上角弹窗提醒</span></label>
+      <button id="clearSeenBtn" class="ghost">清除提醒记录（7 天内已提醒过的视频不再重复弹）</button>
+      <div id="seenTip" class="tip"></div>
+    </section>
+
+    <section>
+      <div class="sec-t">基础设置</div>
+      <div class="row"><label>默认平台</label>
+        <select id="platform">
+          <option value="both">B站 + YouTube</option>
+          <option value="bilibili">仅哔哩哔哩</option>
+          <option value="youtube">仅 YouTube</option>
+        </select>
+      </div>
+      <div class="row"><label>排序方式</label>
+        <select id="order">
+          <option value="views">播放量（热门优先）</option>
+          <option value="relevance">相关度</option>
+          <option value="date">最新发布</option>
+        </select>
+      </div>
+      <div class="row"><label>YouTube API Key（可选）</label>
+        <input type="text" id="ytKey" placeholder="留空则用网页解析" />
+      </div>
+      <label class="check"><input type="checkbox" id="autoOpen" /><span>打开网页时自动显示侧栏</span></label>
+      <button id="saveBtn" class="pri">保存基础设置</button>
+      <div id="saveTip" class="tip"></div>
+    </section>
+  </div>
+
+  <script src="presets.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

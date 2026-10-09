@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="popup.css" />
+  <title>主题视频侧栏</title>
+</head>
+<body>
+  <div class="hd">
+    <div class="logo">▶</div>
+    <div>
+      <div class="tt">主题视频侧栏</div>
+      <div class="st">自动识别网页主题 · 推荐 B站 / YouTube 视频</div>
+    </div>
+  </div>
+
+  <button id="toggleBtn" class="primary">在当前页面打开侧栏</button>
+
+  <div class="row">
+    <label>默认平台</label>
+    <select id="platform">
+      <option value="both">B站 + YouTube</option>
+      <option value="bilibili">仅哔哩哔哩</option>
+      <option value="youtube">仅 YouTube</option>
+    </select>
+  </div>
+
+  <div class="row">
+    <label>排序方式</label>
+    <select id="order">
+      <option value="views">播放量（热门优先）</option>
+      <option value="relevance">相关度</option>
+      <option value="date">最新发布</option>
+    </select>
+  </div>
+
+  <div class="row">
+    <label>每平台数量</label>
+    <select id="limit">
+      <option value="8">8</option>
+      <option value="12">12</option>
+      <option value="20">20</option>
+    </select>
+  </div>
+
+  <label class="check">
+    <input type="checkbox" id="autoOpen" />
+    <span>打开网页时自动显示侧栏</span>
+  </label>
+
+  <div class="sec">
+    <div class="sec-t">YouTube（可选）</div>
+    <input type="text" id="ytKey" placeholder="YouTube Data API Key（留空则用网页解析）" />
+    <select id="ytRegion">
+      <option value="HK">结果地区：中国香港</option>
+      <option value="TW">结果地区：中国台湾</option>
+      <option value="US">结果地区：美国</option>
+      <option value="JP">结果地区：日本</option>
+    </select>
+    <div class="hint">B站无需配置，直接可用。填了 Key 的 YouTube 结果更稳定（含精确时长与播放量）。</div>
+  </div>
+
+  <button id="saveBtn">保存设置</button>
+  <button id="optBtn" class="link">订阅博主 / 提醒设置 / 推荐组合 →</button>
+  <div id="tip" class="tip"></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

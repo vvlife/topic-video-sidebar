@@ -1,0 +1,44 @@
+{
+  "manifest_version": 3,
+  "name": "主题视频侧栏 · Topic Video Sidebar",
+  "version": "1.0.0",
+  "description": "自动识别当前网页主题，在右侧栏推荐相关的哔哩哔哩 / YouTube 优质视频，点击即在新标签页打开。",
+  "permissions": ["storage", "scripting", "activeTab"],
+  "host_permissions": [
+    "https://www.bilibili.com/*",
+    "https://api.bilibili.com/*",
+    "https://*.hdslb.com/*",
+    "https://www.youtube.com/*",
+    "https://www.googleapis.com/*",
+    "https://*.ytimg.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "主题视频侧栏",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["style.js", "content.js"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
