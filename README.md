@@ -1,5 +1,7 @@
 # 主题视频侧栏 · Topic Video Sidebar
 
+> 仓库地址：https://github.com/vvlife/topic-video-sidebar
+
 一个 Chrome 扩展（Manifest V3）：自动识别当前网页的主题，在页面右侧浮层侧栏中推荐相关的 **哔哩哔哩 / YouTube** 优质视频；支持**订阅博主**，命中主题时**右上角弹窗提醒**，点击即在新标签页打开视频。
 
 ![preview](preview/preview-wiki.png)
