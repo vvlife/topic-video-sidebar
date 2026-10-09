@@ -38,7 +38,15 @@
 
     <section>
       <div class="sec-t">提醒设置</div>
-      <label class="check"><input type="checkbox" id="notifyEnabled" /><span>侧栏未打开时，订阅博主命中当前主题就在页面右上角弹窗提醒</span></label>
+      <label class="check"><input type="checkbox" id="notifyEnabled" /><span>订阅博主命中当前主题时，在页面右上角弹窗提醒（默认只在命中时提醒，不自动展开侧栏）</span></label>
+      <div class="row"><label>提醒停留时长</label>
+        <select id="toastSeconds">
+          <option value="5">5 秒后自动消失</option>
+          <option value="8">8 秒后自动消失</option>
+          <option value="15">15 秒后自动消失</option>
+        </select>
+      </div>
+      <div class="hint">鼠标移到提醒上会暂停倒计时，方便点击视频</div>
       <button id="clearSeenBtn" class="ghost">清除提醒记录（7 天内已提醒过的视频不再重复弹）</button>
       <div id="seenTip" class="tip"></div>
     </section>

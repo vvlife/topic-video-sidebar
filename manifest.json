@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "主题视频侧栏 · Topic Video Sidebar",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "自动识别当前网页主题，在右侧栏推荐相关的哔哩哔哩 / YouTube 优质视频，点击即在新标签页打开。",
   "permissions": ["storage", "scripting", "activeTab"],
   "host_permissions": [

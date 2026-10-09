@@ -1,6 +1,6 @@
 const $ = (id) => document.getElementById(id);
 const tip = $('tip');
-const DEFAULTS = { autoOpen: true, platform: 'both', order: 'views', limit: 12, youtubeApiKey: '', ytRegion: 'HK' };
+const DEFAULTS = { autoOpen: false, platform: 'both', order: 'views', limit: 12, youtubeApiKey: '', ytRegion: 'HK' };
 
 function showTip(text, isErr) {
   tip.textContent = text;

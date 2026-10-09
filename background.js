@@ -694,18 +694,22 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.sync.get({
-    autoOpen: true, platform: 'both', order: 'views', limit: 12,
-    youtubeApiKey: '', ytRegion: 'HK', subscriptions: [], notifyEnabled: true
+    autoOpen: false, platform: 'both', order: 'views', limit: 12,
+    youtubeApiKey: '', ytRegion: 'HK', subscriptions: [], notifyEnabled: true,
+    toastSeconds: 8, autoOpenMigrated: false
   }).then((cfg) => {
     chrome.storage.sync.set({
-      autoOpen: cfg.autoOpen,
+      // v1.2 起默认不再自动展开侧栏：只在订阅命中时弹右上角提醒
+      autoOpen: cfg.autoOpenMigrated ? cfg.autoOpen : false,
+      autoOpenMigrated: true,
       platform: cfg.platform,
       order: cfg.order,
       limit: cfg.limit,
       youtubeApiKey: cfg.youtubeApiKey,
       ytRegion: cfg.ytRegion,
       subscriptions: cfg.subscriptions,
-      notifyEnabled: cfg.notifyEnabled
+      notifyEnabled: cfg.notifyEnabled,
+      toastSeconds: cfg.toastSeconds
     });
   });
 });

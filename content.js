@@ -278,13 +278,14 @@
   /* ==================== 侧栏 UI ==================== */
 
   const state = {
-    settings: { autoOpen: true, platform: 'both', order: 'views', limit: 12 },
+    settings: { autoOpen: false, platform: 'both', order: 'views', limit: 12 },
     topic: { keywords: [], query: '' },
     loading: false,
     error: null,
     results: [],
     subHits: [],
     notifyEnabled: true,
+    toastSeconds: 8,
     collapsed: false,
     hidden: false,
     width: 360,
@@ -695,10 +696,22 @@
     });
 
     const more = el('button', 'tv-toast-more', '在侧栏查看全部命中');
-    more.onclick = () => { hideToast(); setHidden(false); setCollapsed(false); };
+    more.onclick = () => { hideToast(); setHidden(false); setCollapsed(false); refresh(true); };
     toastBox.appendChild(more);
 
-    toastTimer = setTimeout(hideToast, 25000);
+    startToastTimer();
+  }
+
+  function startToastTimer() {
+    if (toastTimer) { clearTimeout(toastTimer); toastTimer = null; }
+    const secs = Number(state.toastSeconds) || 8;
+    toastTimer = setTimeout(hideToast, secs * 1000);
+    if (toastBox && !toastBox.dataset.hoverBound) {
+      toastBox.dataset.hoverBound = '1';
+      // 鼠标悬停时暂停倒计时，移开后重新开始，避免点不到
+      toastBox.addEventListener('mouseenter', () => { if (toastTimer) { clearTimeout(toastTimer); toastTimer = null; } });
+      toastBox.addEventListener('mouseleave', startToastTimer);
+    }
   }
 
   function hideToast() {
@@ -723,9 +736,13 @@
 
   async function init() {
     buildDom();
-    const cfg = await chrome.storage.sync.get({ autoOpen: true, platform: 'both', order: 'views', limit: 12, notifyEnabled: true });
+    const cfg = await chrome.storage.sync.get({
+      autoOpen: false, platform: 'both', order: 'views', limit: 12,
+      notifyEnabled: true, toastSeconds: 8
+    });
     state.settings = { ...state.settings, ...cfg };
     state.notifyEnabled = !!cfg.notifyEnabled;
+    state.toastSeconds = Number(cfg.toastSeconds) || 8;
     const local = await chrome.storage.local.get({ tvsHidden: false, tvsWidth: 360 });
     state.hidden = !!local.tvsHidden;
     state.width = local.tvsWidth || 360;
@@ -733,7 +750,10 @@
     state.topic = extractTopic();
     render();
 
-    launcher.onclick = () => { setHidden(false); setCollapsed(false); };
+    launcher.onclick = () => {
+      setHidden(false); setCollapsed(false);
+      if (!state.results.length) refresh(true);
+    };
 
     if (!state.hidden) {
       if (state.settings.autoOpen) {
@@ -747,13 +767,17 @@
 
     chrome.storage.onChanged.addListener((changes, area) => {
       if (area !== 'sync') return;
-      if (changes.notifyEnabled) state.notifyEnabled = !!changes.notifyEnabled.newValue;
+      if (changes.notifyEnabled) {
+        state.notifyEnabled = !!changes.notifyEnabled.newValue;
+        if (!state.notifyEnabled) hideToast();
+      }
+      if (changes.toastSeconds) state.toastSeconds = Number(changes.toastSeconds.newValue) || 8;
       const next = {};
       ['autoOpen', 'platform', 'order', 'limit'].forEach((k) => { if (changes[k]) next[k] = changes[k].newValue; });
       if (Object.keys(next).length) {
         state.settings = { ...state.settings, ...next };
         render();
-        if (!state.hidden) refresh(true);
+        if (!state.hidden && !state.collapsed) refresh(true);
       }
     });
 
@@ -779,7 +803,10 @@
       if (location.href !== state.lastUrl) {
         state.lastUrl = location.href;
         state.topic = extractTopic();
-        if (!state.hidden && state.settings.autoOpen) refresh(true);
+        render();
+        // 侧栏未展开时不请求视频列表，只做订阅命中提醒
+        if (!state.hidden && !state.collapsed) refresh(true);
+        else if (!state.hidden) checkSubscriptions();
       }
     }, 1500);
 

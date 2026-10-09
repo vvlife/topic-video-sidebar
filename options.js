@@ -18,10 +18,12 @@ const avatarColor = (name) => {
 
 async function load() {
   const cfg = await chrome.storage.sync.get({
-    subscriptions: [], notifyEnabled: true, platform: 'both', order: 'views', youtubeApiKey: '', autoOpen: true
+    subscriptions: [], notifyEnabled: true, platform: 'both', order: 'views',
+    youtubeApiKey: '', autoOpen: false, toastSeconds: 8
   });
   subs = cfg.subscriptions || [];
   $('notifyEnabled').checked = !!cfg.notifyEnabled;
+  $('toastSeconds').value = String(Number(cfg.toastSeconds) || 8);
   $('platform').value = cfg.platform;
   $('order').value = cfg.order;
   $('ytKey').value = cfg.youtubeApiKey || '';
@@ -179,6 +181,10 @@ $('addInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('add
 
 $('notifyEnabled').onchange = () => {
   chrome.storage.sync.set({ notifyEnabled: $('notifyEnabled').checked });
+};
+
+$('toastSeconds').onchange = () => {
+  chrome.storage.sync.set({ toastSeconds: parseInt($('toastSeconds').value, 10) || 8 });
 };
 
 $('clearSeenBtn').onclick = async () => {
